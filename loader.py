@@ -2,10 +2,12 @@ import csv
 
 from datetime import datetime
 import numpy as np
+import json
 
 
 def load_no_show_issue(path='./data/No-show-Issue-Comma-300k.csv'):
     week_days = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+
     with open(path, newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         feature_names = next(spamreader)
@@ -41,7 +43,8 @@ def load_no_show_issue(path='./data/No-show-Issue-Comma-300k.csv'):
                 data.append(tuple(instance))
             except ValueError as ex:
                 print(ex)
-
+    with open(path[:-4] + 'cache.json', 'w') as outfile:
+        json.dump((data, target, feature_names, target_names), outfile)
     return np.array(data, dtype='float_'), np.array(target, dtype='int_'), np.array(feature_names,
                                                                                     dtype='U10'), np.array(target_names,
                                                                                                            dtype='U10')
@@ -74,6 +77,14 @@ def validate_string_datetime(row_data, index):
         return dt
     except ValueError:
         raise ValueError("Invalid datetime string: {}".format(dt))
+
+
+def load_no_show_issue_cache(path='./data/No-show-Issue-Comma-300kcache.json'):
+    with open(path, 'r') as jsonfd:
+        raw = json.load(jsonfd)
+        return np.array(raw[0], dtype='float_'), np.array(raw[1], dtype='int_'), np.array(raw[2],
+                                                                                          dtype='U10'), np.array(raw[3],
+                                                                                                                 dtype='U10')
 
 
 def filter_features(x_data, x_names, features_2_allow):

@@ -1,11 +1,11 @@
 import numpy as np
 from sklearn import metrics
 from sklearn.cross_validation import train_test_split, KFold, cross_val_score
-from sklearn.linear_model import SGDClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from loader import load_no_show_issue, filter_features, load_no_show_issue_cache
+from loader import filter_features, load_no_show_issue, load_no_show_issue_cache
 
 #x_appointment, y_appointment, x_names, y_names = load_no_show_issue()
 
@@ -20,7 +20,7 @@ x_train, x_test, y_train, y_test = train_test_split(x_data_filtered, y_appointme
 normalizador = StandardScaler().fit(x_train)
 xn_train = normalizador.transform(x_train)
 
-clasificador = SGDClassifier()
+clasificador = LogisticRegression()
 # entrenar
 clasificador.fit(xn_train, y_train)
 
@@ -32,7 +32,7 @@ print('Exactitud: {}'.format(exactitud))
 print(metrics.classification_report(y_test, y_test_pred))
 print('Matriz de confusión\n{}'.format(metrics.confusion_matrix(y_test, y_test_pred)))
 
-modelo = Pipeline([('normalizador', StandardScaler()), ('modelolineal', SGDClassifier())])
+modelo = Pipeline([('normalizador', StandardScaler()), ('modelolinealrlog', LogisticRegression())])
 modelo.fit(x_train, y_train)
 modelo.predict(x_test)
 
