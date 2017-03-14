@@ -9,12 +9,11 @@ from scipy.sparse import csc
 
 from loader import filter_features, load_no_show_issue, load_no_show_issue_cache
 
-#x_appointment, y_appointment, x_names, y_names = load_no_show_issue()
+x_appointment, y_appointment, x_names, y_names = load_no_show_issue()
 
-x_appointment, y_appointment, x_names, y_names = load_no_show_issue_cache()
+#x_appointment, y_appointment, x_names, y_names = load_no_show_issue_cache()
 
 features = ['Age', 'Gender', 'DayOfTheYe', 'DayOfTheWe', 'Diabetes', 'Alcoolism', 'HiperTensi', 'Handcap', 'Smokes', 'Scholarshi', 'Tuberculos', 'Sms_Remind', 'AwaitingTi']
-
 
 x_data_filtered, x_names_filtered = filter_features(x_appointment, x_names, features)
 x_train, x_test, y_train, y_test = train_test_split(x_data_filtered, y_appointment, test_size=0.25)

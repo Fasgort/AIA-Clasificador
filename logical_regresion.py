@@ -7,9 +7,9 @@ from sklearn.preprocessing import StandardScaler
 
 from loader import filter_features, load_no_show_issue, load_no_show_issue_cache
 
-#x_appointment, y_appointment, x_names, y_names = load_no_show_issue()
+x_appointment, y_appointment, x_names, y_names = load_no_show_issue()
 
-x_appointment, y_appointment, x_names, y_names = load_no_show_issue_cache()
+#x_appointment, y_appointment, x_names, y_names = load_no_show_issue_cache()
 
 features = ['Age', 'Gender', 'DayOfTheYe', 'DayOfTheWe', 'Diabetes', 'Alcoolism', 'HiperTensi', 'Handcap', 'Smokes', 'Scholarshi', 'Tuberculos', 'Sms_Remind', 'AwaitingTi']
 
@@ -28,13 +28,13 @@ xn_test = normalizador.transform(x_test)
 y_test_pred = clasificador.predict(xn_test)
 exactitud = metrics.accuracy_score(y_test, y_test_pred)
 
+
+print('Matriz de confusión\n{}'.format(metrics.confusion_matrix(y_test, y_test_pred)))
 print('Exactitud: {}'.format(exactitud))
 print(metrics.classification_report(y_test, y_test_pred))
-print('Matriz de confusión\n{}'.format(metrics.confusion_matrix(y_test, y_test_pred)))
-
 modelo = Pipeline([('normalizador', StandardScaler()), ('modelolinealrlog', LogisticRegression())])
 modelo.fit(x_train, y_train)
-modelo.predict(x_test)
+#modelo.predict(x_test)
 
 kfold5 = KFold(x_data_filtered.shape[0], 5, shuffle=True)
 valores = cross_val_score(modelo, x_data_filtered, y_appointment, cv=kfold5)
